@@ -8,7 +8,6 @@ using System.Windows.Forms;
 
 // 2D Platformer – Single-file WinForms prototype
 // 目標：可跑動、跳躍、精確軸向碰撞、簡單敵人與收集物、基本動畫時序。
-// 建置：.NET 6/7/8 Windows、WinForms。把此檔命名為 Program.cs 直接建置執行即可。
 
 static class Program
 {
@@ -116,15 +115,15 @@ public class GameForm : Form
 
     void GenerateNextChunk(float startX)
     {
-        const float MOVE_SPEED = 180;
-        const float JUMP_VY = -280;
-        const float GRAVITY = 600;
+        const float MOVE_SPEED = 160;
+        const float JUMP_VY = -440;
+        const float GRAVITY = 900;
 
         float jumpTime = (Math.Abs(JUMP_VY) / GRAVITY) * 2;
         float maxJumpX = MOVE_SPEED * jumpTime * 0.8f;
-        float maxUp = (JUMP_VY * JUMP_VY) / (2 * GRAVITY)-20;
+        float maxUp = (JUMP_VY * JUMP_VY) / (2 * GRAVITY)-100;
 
-        int platformCount = _rng.Next(2, 5);
+        int platformCount = 1;
         float lastPlatformX = startX;
         float lastPlatformY = 400 - _rng.Next(0, 120);
 
@@ -134,19 +133,22 @@ public class GameForm : Form
             float nextX = lastPlatformX + gap;
 
             float deltaY = (float)Math.Sin(_rng.Next(0, 100000)) *((int)maxUp);
-            float nextY = Math.Clamp(lastPlatformY + deltaY, 180, 380);
+            float nextY = lastPlatformY + deltaY;
 
             float width = _rng.Next(80, 200);
             var plat = new RectangleF(nextX, nextY, width, 20);
             _platforms.Add(plat);
 
-            if (_rng.NextDouble() < 0.6)
+            if (_rng.NextDouble() < 0.7)
             {
                 float patrolLeft = nextX;
-                float patrolRight = nextX + width - 40;
-                if (patrolRight > patrolLeft + 40)
+                float patrolRight = nextX + width;
+                if(60> (int)(nextX / 100))
                     _enemies.Add(new Patroller(new RectangleF(nextX + 20, nextY - 20, 40, 20),
-                                               patrolLeft, patrolRight, 60f));
+                                               patrolLeft, patrolRight, 60));
+                else
+                    _enemies.Add(new Patroller(new RectangleF(nextX + 20, nextY - 20, 40, 20),
+                                               patrolLeft, patrolRight,  _rng.Next(60, (int)(nextX / 100))));
             }
 
             if (_rng.NextDouble() < 0.2)
