@@ -6,9 +6,9 @@ using System.Linq;
 using System.Numerics;
 using System.Windows.Forms;
 
-// 2D Platformer ¡V Single-file WinForms prototype
-// ¥Ø¼Ğ¡G¥i¶]°Ê¡B¸õÅD¡Bºë½T¶b¦V¸I¼²¡BÂ²³æ¼Ä¤H»P¦¬¶°ª«¡B°ò¥»°Êµe®É§Ç¡C
-// «Ø¸m¡G.NET 6/7/8 Windows¡BWinForms¡C§â¦¹ÀÉ©R¦W¬° Program.cs ª½±µ«Ø¸m°õ¦æ§Y¥i¡C
+// 2D Platformer â€“ Single-file WinForms prototype
+// ç›®æ¨™ï¼šå¯è·‘å‹•ã€è·³èºã€ç²¾ç¢ºè»¸å‘ç¢°æ’ã€ç°¡å–®æ•µäººèˆ‡æ”¶é›†ç‰©ã€åŸºæœ¬å‹•ç•«æ™‚åºã€‚
+// å»ºç½®ï¼š.NET 6/7/8 Windowsã€WinFormsã€‚æŠŠæ­¤æª”å‘½åç‚º Program.cs ç›´æ¥å»ºç½®åŸ·è¡Œå³å¯ã€‚
 
 static class Program
 {
@@ -39,30 +39,30 @@ public class GameForm : Form
     // Player
     readonly Player _player = new Player(new PointF(80, 200));
 
-    // ¦Û­q­«¥ÍÂI
+    // è‡ªè¨‚é‡ç”Ÿé»
     PointF? _customRespawn = null;
     bool _spacePressed = false;
 
     int _collected = 0;
 
     // Camera
-    float _camX = 0f; // ¤ô¥­¸òÀH
+    float _camX = 0f; // æ°´å¹³è·Ÿéš¨
 
-    // Sprites (¥i´À´«¬°¹ê»Ú¹Ï¤ù)
+    // Sprites (å¯æ›¿æ›ç‚ºå¯¦éš›åœ–ç‰‡)
     readonly Font _hudFont = new Font("Consolas", 14, FontStyle.Bold);
 
     public GameForm()
     {
         Text = "2D Platformer (WinForms Minimal)";
         ClientSize = new Size(WIDTH, HEIGHT);
-        DoubleBuffered = true; // ´î¤Ö°{Ã{
+        DoubleBuffered = true; // æ¸›å°‘é–ƒçˆ
         BackColor = Color.FromArgb(30, 32, 40);
         SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.OptimizedDoubleBuffer, true);
 
-        // Ãö¥d¡GÂ²³æ tile/¥­¥x¡A¥H world space ªí¥Ü
+        // é—œå¡ï¼šç°¡å–® tile/å¹³å°ï¼Œä»¥ world space è¡¨ç¤º
         BuildLevel();
 
-        // ­p®É¾¹¡G60FPS ¥Ø¼Ğ
+        // è¨ˆæ™‚å™¨ï¼š60FPS ç›®æ¨™
         _timer = new System.Windows.Forms.Timer { Interval = 1000 / 60 };
         _timer.Tick += (s, e) =>
         {
@@ -74,20 +74,20 @@ public class GameForm : Form
         };
         _timer.Start();
 
-        // ¿é¤J
+        // è¼¸å…¥
         KeyDown += (s, e) => _keys.Add(e.KeyCode);
         KeyUp += (s, e) => _keys.Remove(e.KeyCode);
 
-        // ¨¾¤î Alt Ä²µo¨t²ÎÁn
+        // é˜²æ­¢ Alt è§¸ç™¼ç³»çµ±è²
         KeyPreview = true;
     }
 
     void BuildLevel()
     {
-        // °ò©³¦a­±
-        _platforms.Add(new RectangleF(0, 400, 3000, 40));
+        // åŸºåº•åœ°é¢
+        _platforms.Add(new RectangleF(0, 400, 1600, 40));
 
-        // °ª§C¥­¥x
+        // é«˜ä½å¹³å°
         _platforms.Add(new RectangleF(200, 340, 140, 20));
         _platforms.Add(new RectangleF(380, 300, 160, 20));
         _platforms.Add(new RectangleF(620, 260, 160, 20));
@@ -95,14 +95,14 @@ public class GameForm : Form
         _platforms.Add(new RectangleF(1100, 280, 160, 20));
         _platforms.Add(new RectangleF(1400, 240, 200, 20));
 
-        // Àğ­±
+        // ç‰†é¢
         _platforms.Add(new RectangleF(560, 200, 20, 200));
 
-        // ¼Ä¤H¡]¥ª¥k¨µÅŞ¡^
+        // æ•µäººï¼ˆå·¦å³å·¡é‚ï¼‰
         _enemies.Add(new Patroller(new RectangleF(360, 280, 40, 20), 320, 520, 60f));
         _enemies.Add(new Patroller(new RectangleF(1080, 260, 40, 20), 1040, 1240, 80f));
 
-        // ¦¬¶°ª«
+        // æ”¶é›†ç‰©
         _coins.Add(new RectangleF(210, 310, 14, 14));
         _coins.Add(new RectangleF(410, 270, 14, 14));
         _coins.Add(new RectangleF(650, 230, 14, 14));
@@ -116,7 +116,7 @@ public class GameForm : Form
 
     void GenerateNextChunk(float startX)
     {
-        const float MOVE_SPEED = 120;
+        const float MOVE_SPEED = 180;
         const float JUMP_VY = -280;
         const float GRAVITY = 600;
 
@@ -140,7 +140,7 @@ public class GameForm : Form
             var plat = new RectangleF(nextX, nextY, width, 20);
             _platforms.Add(plat);
 
-            if (_rng.NextDouble() < 0.5)
+            if (_rng.NextDouble() < 0.6)
             {
                 float patrolLeft = nextX;
                 float patrolRight = nextX + width - 40;
@@ -149,7 +149,7 @@ public class GameForm : Form
                                                patrolLeft, patrolRight, 60f));
             }
 
-            if (_rng.NextDouble() < 0.3)
+            if (_rng.NextDouble() < 0.2)
             {
                 _coins.Add(new RectangleF(nextX + width / 2, nextY - 30, 14, 14));
             }
@@ -162,7 +162,7 @@ public class GameForm : Form
     }
     void UpdateGame(float dt)
     {
-        // Input ¡÷ ´Á±æ³t«×
+        // Input â†’ æœŸæœ›é€Ÿåº¦
         float ax = 0f;
         if (_keys.Contains(Keys.Left) || _keys.Contains(Keys.A)) ax -= 1f;
         if (_keys.Contains(Keys.Right) || _keys.Contains(Keys.D)) ax += 1f;
@@ -171,13 +171,13 @@ public class GameForm : Form
 
         _player.Update(dt, ax, pressedJump, _platforms);
 
-        // ¼Ä¤H¨µÅŞ & »Pª±®a¸I¼²
+        // æ•µäººå·¡é‚ & èˆ‡ç©å®¶ç¢°æ’
         foreach (var e in _enemies)
         {
             e.Update(dt, _platforms);
             if (RectIntersects(_player.Bounds, e.Bounds))
             {
-                // ±q¤W¤è½ò¨ì¤~ºâÀ»±Ñ¡A§_«h¨ü¶Ë¡]Â²¤Æ¦¨¦^¨ì°_ÂI¡^
+                // å¾ä¸Šæ–¹è¸©åˆ°æ‰ç®—æ“Šæ•—ï¼Œå¦å‰‡å—å‚·ï¼ˆç°¡åŒ–æˆå›åˆ°èµ·é»ï¼‰
                 if (_player.Velocity.Y > 0 && _player.Bounds.Bottom - e.Bounds.Top < 14)
                 {
                     _player.Bounce(180f);
@@ -195,7 +195,7 @@ public class GameForm : Form
         }
         _enemies.RemoveAll(en => !en.Alive);
 
-        // ¦¬¶°ª«
+        // æ”¶é›†ç‰©
         for (int i = _coins.Count - 1; i >= 0; --i)
         {
             if (RectIntersects(_player.Bounds, _coins[i]))
@@ -205,7 +205,7 @@ public class GameForm : Form
             }
         }
 
-        // Â²³æÃèÀY¸òÀH¡]¤ô¥­¡^
+        // ç°¡å–®é¡é ­è·Ÿéš¨ï¼ˆæ°´å¹³ï¼‰
         float targetCam = _player.Position.X - WIDTH * 0.4f;
         _camX += (targetCam - _camX) * MathF.Min(1f, dt * 8f);
         _camX = MathF.Max(0, _camX);
@@ -213,8 +213,8 @@ public class GameForm : Form
         {
             GenerateNextChunk(_lastGeneratedX);
         }
-        // «Ø¥ß¦Û­q­«¥ÍÂI¡G®ø¯Ó 10 ª÷¹ô
-        // ªÅ¥ÕÁä«Ø­«¥ÍÂI¡]Á×§K­«½ÆÄ²µo¡^
+        // å»ºç«‹è‡ªè¨‚é‡ç”Ÿé»ï¼šæ¶ˆè€— 10 é‡‘å¹£
+        // ç©ºç™½éµå»ºé‡ç”Ÿé»ï¼ˆé¿å…é‡è¤‡è§¸ç™¼ï¼‰
         if (_keys.Contains(Keys.Space))
         {
             if (!_spacePressed && _collected >= 10)
@@ -230,7 +230,7 @@ public class GameForm : Form
         }
 
 
-        // ¦pªG±¼¨ìµe­±¤U¤è ¡÷ ­«¥Í
+        // å¦‚æœæ‰åˆ°ç•«é¢ä¸‹æ–¹ â†’ é‡ç”Ÿ
         if (_player.Bounds.Y > 700)
         {
             Respawn();
@@ -257,25 +257,25 @@ public class GameForm : Form
         var g = e.Graphics;
         g.TranslateTransform(-_camX, 0);
 
-        // ­I´º¼h
+        // èƒŒæ™¯å±¤
         DrawParallax(g);
 
-        // ¥­¥x
+        // å¹³å°
         foreach (var p in _platforms)
             DrawPlatform(g, p);
 
-        // ¦¬¶°ª«
+        // æ”¶é›†ç‰©
         foreach (var c in _coins)
             DrawCoin(g, c);
 
-        // ¼Ä¤H
+        // æ•µäºº
         foreach (var en in _enemies)
             DrawEnemy(g, en.Bounds);
 
-        // ª±®a
+        // ç©å®¶
         DrawPlayer(g, _player);
 
-        // HUD¡]¤£¸òÀHÃèÀY¡^
+        // HUDï¼ˆä¸è·Ÿéš¨é¡é ­ï¼‰
         g.ResetTransform();
         g.DrawString($"COINS: {_collected}", _hudFont, Brushes.White, 10, 10);
         g.DrawString($"ON GROUND: {_player.OnGround}", _hudFont, Brushes.White, 10, 30);
@@ -288,14 +288,14 @@ public class GameForm : Form
 
     void DrawParallax(Graphics g)
     {
-        // Â²³æªºµø®t­I´º
+        // ç°¡å–®çš„è¦–å·®èƒŒæ™¯
         using var dark = new SolidBrush(Color.FromArgb(24, 26, 32));
         using var mid = new SolidBrush(Color.FromArgb(40, 44, 56));
         using var light = new SolidBrush(Color.FromArgb(58, 64, 80));
 
         var rc = new RectangleF(_camX, 0, WIDTH, HEIGHT);
         g.FillRectangle(dark, rc);
-        // ¤s§Î
+        // å±±å½¢
         g.TranslateTransform(-_camX * 0.4f, 0);
         g.FillPolygon(mid, new[] { new PointF(0, 360), new PointF(160, 280), new PointF(320, 360) });
         g.FillPolygon(mid, new[] { new PointF(400, 360), new PointF(560, 270), new PointF(720, 360) });
@@ -328,27 +328,27 @@ public class GameForm : Form
         using var b = new SolidBrush(Color.FromArgb(220, 80, 80));
         g.FillRectangle(b, r);
         g.DrawRectangle(Pens.DarkRed, r.X, r.Y, r.Width, r.Height);
-        // ²´·ú
+        // çœ¼ç›
         g.FillEllipse(Brushes.Black, r.X + 8, r.Y + 4, 6, 6);
         g.FillEllipse(Brushes.Black, r.Right - 14, r.Y + 4, 6, 6);
     }
 
     void DrawPlayer(Graphics g, Player p)
     {
-        // ¯x§Î + Â²©ö°Êµe¡]¨B¥ïÂ\°Ê¡^
+        // çŸ©å½¢ + ç°¡æ˜“å‹•ç•«ï¼ˆæ­¥ä¼æ“ºå‹•ï¼‰
         var r = p.Bounds;
         using var body = new SolidBrush(Color.FromArgb(90, 160, 240));
         g.FillRectangle(body, r);
         g.DrawRectangle(Pens.SteelBlue, r.X, r.Y, r.Width, r.Height);
 
-        // ¸}¨B¡]¨Ì¾Ú°Êµe¬Û¦ì¡^
+        // è…³æ­¥ï¼ˆä¾æ“šå‹•ç•«ç›¸ä½ï¼‰
         float phase = p.AnimPhase;
         float leg = MathF.Sin(phase) * 3f;
         using var pen = new Pen(Color.White, 2);
         g.DrawLine(pen, r.X + 8, r.Bottom, r.X + 8, r.Bottom + leg);
         g.DrawLine(pen, r.Right - 8, r.Bottom, r.Right - 8, r.Bottom - leg);
 
-        // Â²³æ´Â¦V
+        // ç°¡å–®æœå‘
         if (p.Facing >= 0)
         {
             g.FillEllipse(Brushes.White, r.Right - 14, r.Y + 6, 8, 8);
@@ -371,18 +371,18 @@ public class Player
     public int Facing = 1; // 1:right, -1:left
     public float AnimPhase;
 
-    // ½Õ°Ñ
-    const float MOVE_SPEED = 140f;
+    // èª¿åƒ
+    const float MOVE_SPEED = 200f;
     const float AIR_ACCEL = 900f;
-    const float GROUND_ACCEL = 2000f;
+    const float GROUND_ACCEL = 3000f;
     const float GRAVITY = 900f;
     const float JUMP_VY = -440f;
     const float MAX_FALL = 800f;
-    const float FRICTION = 8f;
+    const float FRICTION = 0.5f;
 
-    // ¸õÅD½w½Ä / ¸¨¦a¼e®¤¡]§ïµ½¤â·P¡^
-    float coyoteTime = 0f; // ¸¨¦a¼e®¤®É¶¡
-    float jumpBuffer = 0f; // ´£«e«ö¸õªº½w½Ä
+    // è·³èºç·©è¡ / è½åœ°å¯¬æ•ï¼ˆæ”¹å–„æ‰‹æ„Ÿï¼‰
+    float coyoteTime = 0f; // è½åœ°å¯¬æ•æ™‚é–“
+    float jumpBuffer = 0f; // æå‰æŒ‰è·³çš„ç·©è¡
 
     public Player(PointF spawn)
     {
@@ -404,26 +404,26 @@ public class Player
 
     public void Update(float dt, float ax, bool jumpPressed, List<RectangleF> solids)
     {
-        // ­Ë¼Æ¼e®¤»P½w½Ä
+        // å€’æ•¸å¯¬æ•èˆ‡ç·©è¡
         coyoteTime = MathF.Max(0, coyoteTime - dt);
         jumpBuffer = jumpPressed ? 0.15f : MathF.Max(0, jumpBuffer - dt);
 
-        // ­±¦V
+        // é¢å‘
         if (Math.Abs(ax) > 0.01f) Facing = ax > 0 ? 1 : -1;
 
-        // ¤ô¥­¥[³t«× + ¼¯À¿
+        // æ°´å¹³åŠ é€Ÿåº¦ + æ‘©æ“¦
         float accel = OnGround ? GROUND_ACCEL : AIR_ACCEL;
         float targetVx = ax * MOVE_SPEED;
         float vx = Lerp(Velocity.X, targetVx, 1f - MathF.Exp(-accel * dt / 1000f));
 
-        // ÃB¥~¦a­±¼¯À¿¡AÃPÁä®É³v¨B°I´î
+        // é¡å¤–åœ°é¢æ‘©æ“¦ï¼Œé¬†éµæ™‚é€æ­¥è¡°æ¸›
         if (OnGround && Math.Abs(ax) < 0.01f)
-            vx = Lerp(vx, 0f, 1f - MathF.Exp(-FRICTION * dt));
+            vx = vx-FRICTION;
 
         float vy = Velocity.Y + GRAVITY * dt;
         if (vy > MAX_FALL) vy = MAX_FALL;
 
-        // ¸õÅD¡]¤ä´©¼e®¤/½w½Ä¡^
+        // è·³èºï¼ˆæ”¯æ´å¯¬æ•/ç·©è¡ï¼‰
         if ((OnGround || coyoteTime > 0f) && jumpBuffer > 0f)
         {
             vy = JUMP_VY;
@@ -432,39 +432,39 @@ public class Player
             jumpBuffer = 0f;
         }
 
-        // ³v¶b²¾°Ê + ºë½T¤ÀÂ÷
+        // é€è»¸ç§»å‹• + ç²¾ç¢ºåˆ†é›¢
         var newPos = new PointF(Position.X, Position.Y);
 
-        // X ¶b
+        // X è»¸
         newPos.X += vx * dt * 1f;
         var boundsX = new RectangleF(newPos.X - Size.Width / 2, Position.Y - Size.Height, Size.Width, Size.Height);
         ResolveCollisionsAxis(ref boundsX, solids, axisX: true);
         newPos.X = boundsX.X + Size.Width / 2;
 
-        // Y ¶b
+        // Y è»¸
         newPos.Y += vy * dt * 1f;
         var boundsY = new RectangleF(boundsX.X, newPos.Y - Size.Height, Size.Width, Size.Height);
         bool wasOnGround = OnGround;
         OnGround = false;
         ResolveCollisionsAxis(ref boundsY, solids, axisX: false);
-        if (!wasOnGround && OnGround) coyoteTime = 0.08f; // ­è¸¨¦a¤Ö¶q¼e®¤¡A¨Ï³s¸õ§óÃ­©w
+        if (!wasOnGround && OnGround) coyoteTime = 0.08f; // å‰›è½åœ°å°‘é‡å¯¬æ•ï¼Œä½¿é€£è·³æ›´ç©©å®š
         newPos.Y = boundsY.Y + Size.Height;
 
         Position = newPos;
         Velocity = new PointF(vx, OnGround ? 0 : vy);
 
-        // °Êµe¬Û¦ì¡]²¾°Ê¤~Â\°Ê¡AªÅ¤¤©ñºC¡^
+        // å‹•ç•«ç›¸ä½ï¼ˆç§»å‹•æ‰æ“ºå‹•ï¼Œç©ºä¸­æ”¾æ…¢ï¼‰
         float walkSpeed = Math.Abs(vx);
         float rate = OnGround ? (0.1f + walkSpeed / MOVE_SPEED * 6f) : 2f;
         AnimPhase += rate * dt;
 
-        // ÃPÁä«áªºµu¸õ¡G­Y¦V¤W³t«×¥B©ñ¶}¸õÁä¡A«d´î³»³t
+        // é¬†éµå¾Œçš„çŸ­è·³ï¼šè‹¥å‘ä¸Šé€Ÿåº¦ä¸”æ”¾é–‹è·³éµï¼Œå‰Šæ¸›é ‚é€Ÿ
         if (vy < 0 && !jumpPressed)
         {
             Velocity = new PointF(Velocity.X, vy * 0.98f);
         }
 
-        // §ó·s jumpBuffer¡]­Y·í«e¦³«ö¸õ¡A«O«ù½w½Ä®É¶¡¡^
+        // æ›´æ–° jumpBufferï¼ˆè‹¥ç•¶å‰æœ‰æŒ‰è·³ï¼Œä¿æŒç·©è¡æ™‚é–“ï¼‰
         if (jumpPressed) jumpBuffer = 0.15f;
         
 
@@ -480,10 +480,10 @@ public class Player
             if (!Intersects(box, s)) continue;
             if (axisX)
             {
-                // ±q¥ª©Î¥k±À¶}
+                // å¾å·¦æˆ–å³æ¨é–‹
                 if (box.X + box.Width / 2 < s.X + s.Width / 2)
                 {
-                    // ±q¥ª°¼¶i¤J ¡÷ ¾a¥ª¶K»ô
+                    // å¾å·¦å´é€²å…¥ â†’ é å·¦è²¼é½Š
                     float overlap = (box.Right) - s.Left;
                     box.X -= overlap;
                 }
@@ -495,12 +495,12 @@ public class Player
             }
             else
             {
-                // ±q¤W©Î¤U±À¶}
+                // å¾ä¸Šæˆ–ä¸‹æ¨é–‹
                 if (box.Y + box.Height / 2 < s.Y + s.Height / 2)
                 {
                     float overlap = (box.Bottom) - s.Top;
                     box.Y -= overlap;
-                    OnGround = true; // ¦Û¤W¤è¸¨¤U
+                    OnGround = true; // è‡ªä¸Šæ–¹è½ä¸‹
                 }
                 else
                 {
@@ -543,7 +543,7 @@ public class Patroller
         if (Bounds.Left < Left) { Bounds.X = Left; dir = 1f; }
         if (Bounds.Right > Right) { Bounds.X = Right - Bounds.Width; dir = -1f; }
 
-        // ±¼¸¨«OÅ@¡G¦pªG¯¸¦b¥­»O¤W¤è¡A´N«O«ù¡F§_«h´M§ä³Ìªñ¦a­±
+        // æ‰è½ä¿è­·ï¼šå¦‚æœç«™åœ¨å¹³è‡ºä¸Šæ–¹ï¼Œå°±ä¿æŒï¼›å¦å‰‡å°‹æ‰¾æœ€è¿‘åœ°é¢
         var below = solids.FirstOrDefault(s =>
             Bounds.Bottom <= s.Top + 2 &&
             Bounds.Right > s.Left && Bounds.Left < s.Right &&
